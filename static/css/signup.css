@@ -1,0 +1,252 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #9c27b0, #7986cb);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.signup-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
+}
+
+/* Signup form styles */
+.signup-form {
+    padding: 40px;
+    width: 50%;
+}
+
+.signup-form h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.messages {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.message.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #c62828;
+}
+
+.message.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-left: 4px solid #2e7d32;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #9c27b0;
+    outline: none;
+}
+
+.checkbox {
+    display: flex;
+    align-items: flex-start;
+}
+
+.checkbox input {
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+.checkbox label {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.checkbox a {
+    color: #9c27b0;
+    text-decoration: none;
+}
+
+.checkbox a:hover {
+    text-decoration: underline;
+}
+
+.signup-btn {
+    width: 100%;
+    background: #9c27b0;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.signup-btn:hover {
+    background: #7b1fa2;
+}
+
+.divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #ddd;
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.divider span {
+    background: white;
+    padding: 0 10px;
+    color: #777;
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+}
+
+.social-signup {
+    display: flex;
+    gap: 15px;
+}
+
+.google-btn,
+.facebook-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.google-btn:hover,
+.facebook-btn:hover {
+    background: #f5f5f5;
+}
+
+.google-btn img,
+.facebook-btn img {
+    width: 20px;
+    margin-right: 8px;
+}
+
+/* Login link */
+.login-link {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.login-link p {
+    color: #555;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #9c27b0;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Signup image styles */
+.signup-image {
+    width: 50%;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.signup-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .signup-card {
+        flex-direction: column;
+    }
+    
+    .signup-form,
+    .signup-image {
+        width: 100%;
+    }
+    
+    .signup-image {
+        order: -1;
+        padding: 30px;
+    }
+}
