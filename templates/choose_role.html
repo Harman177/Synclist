@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,7 @@
 </head>
 <body>
     <header class="header">
-        <a href="{% url 'choose_mode' %}" class="back">&larr; Back</a>
+        <a href="{% url 'choose-mode' %}" class="back">&larr; Back</a>
         <h1>Professional Workspace</h1>
         <div class="user-profile">
             <span>{{ request.user.username }} • Admin</span>
