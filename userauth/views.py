@@ -8,6 +8,7 @@ from django.db.models import Count
 from.models import Ticket,Profile
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.db import models
 
 # Create your views here.
 def signup_view(request):
@@ -19,7 +20,7 @@ def signup_view(request):
             user.profile.save()
             login(request, user)
             if user.profile.is_admin:
-                return redirect('add_employee')
+                return redirect('choose-mode')  # Redirect admin users to choose-mode
             else:
                 return redirect('choose-mode')  # Send non-admin users to choose-mode
     else:
@@ -76,12 +77,31 @@ def admin_dashboard(request):
     if not request.user.profile.is_admin:
         return redirect('employee_dashboard')
     
-    # Get tickets with counts by status
+    # Get search query from request
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')
+    
+    # Base queryset
     tickets = Ticket.objects.all().order_by('-created_at')
-    open_count = tickets.filter(status='open').count()
-    in_progress_count = tickets.filter(status='in_progress').count()
-    resolved_count = tickets.filter(status='resolved').count()
-    closed_count = tickets.filter(status='closed').count()
+    
+    # Apply search filter if query exists
+    if search_query:
+        tickets = tickets.filter(
+            models.Q(title__icontains=search_query) |
+            models.Q(description__icontains=search_query) |
+            models.Q(ticket_number__icontains=search_query)
+        )
+    
+    # Apply status filter if selected
+    if status_filter and status_filter != 'all':
+        tickets = tickets.filter(status=status_filter)
+    
+    # Get counts for all tickets (not just filtered ones)
+    all_tickets = Ticket.objects.all()
+    open_count = all_tickets.filter(status='open').count()
+    in_progress_count = all_tickets.filter(status='in_progress').count()
+    resolved_count = all_tickets.filter(status='resolved').count()
+    closed_count = all_tickets.filter(status='closed').count()
     
     context = {
         'tickets': tickets,
@@ -89,6 +109,8 @@ def admin_dashboard(request):
         'in_progress_count': in_progress_count,
         'resolved_count': resolved_count,
         'closed_count': closed_count,
+        'search_query': search_query,
+        'status_filter': status_filter,
     }
     
     return render(request, 'admin_dashboard.html', context)
@@ -267,7 +289,7 @@ def login_view(request):
         
         if user is not None:
             login(request, user)
-            return redirect('choose_mode.html')
+            return redirect('choose-mode')  # Redirect to choose-mode after login
         else:
             messages.error(request, 'Invalid username or password.')
     
