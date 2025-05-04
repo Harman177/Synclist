@@ -3,233 +3,417 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synclist Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Synclist - Daily Planner</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600&display=swap">
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(52, 152, 219, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(46, 204, 113, 0.05) 0%, transparent 20%);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            font-size: 16px;
+            padding: 20px;
+            color: #1e293b;
         }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 0.8rem 0;
-            height: 60px;
+        .planner-container {
+            width: 100%;
+            max-width: 900px;
+            background: linear-gradient(120deg, #f8cdda 0%, #a1c4fd 50%, #fbc2eb 100%);
+            background-blend-mode: lighten;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding-bottom: 30px;
         }
-
-        .navbar-brand {
+        .planner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: linear-gradient(120deg, #f8cdda 0%, #a1c4fd 50%, #fbc2eb 100%);
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 18px 24px;
+        }
+        .planner-title {
+            font-size: 1.8rem;
             font-weight: 700;
-            font-size: 1.5rem;
-            color: #2d2d2d;
-            transition: color 0.3s ease;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(45deg, #3498db, #2ecc71);
-            background-clip: text;
+            background: linear-gradient(45deg, #3b82f6, #10b981);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        .navbar-brand:hover {
-            opacity: 0.8;
+        .quickstart-info {
+            background-color: #e0f2fe;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        .nav-link {
-            color: #2d2d2d;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
+        .quickstart-info span { font-weight: 500; }
+        .quickstart-info .timer {
+            background-color: #0ea5e9;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        .planner-page {
+            background: linear-gradient(120deg, #f8cdda 0%, #a1c4fd 50%, #fbc2eb 100%);
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .header-section { display: flex; gap: 20px; }
+        .today-section {
+            flex: 1;
+            background-color: #f8fafc;
+            padding: 15px;
             border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            border: 1px solid #e2e8f0;
         }
-
-        .nav-link:hover {
-            color: #3498db;
-            background: rgba(52, 152, 219, 0.1);
+        .section-title {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #64748b;
         }
-
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
-        }
-
-        .welcome-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .welcome-card h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-        }
-
-        .welcome-card p {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .action-button {
-            background: linear-gradient(45deg, #3498db, #2ecc71);
-            color: white;
+        .date-input {
+            width: 100%;
+            padding: 8px 0;
             border: none;
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-right: 1rem;
+            border-bottom: 1px solid #cbd5e1;
+            font-family: inherit;
+            background: transparent;
+            font-size: 1.1rem;
+            font-weight: 500;
         }
-
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-
-        .secondary-button {
-            background: white;
-            color: #3498db;
-            border: 2px solid #3498db;
-        }
-
-        .secondary-button:hover {
-            background: #3498db;
+        .upcoming-section { flex: 1; display: flex; gap: 15px; }
+        .upcoming-box {
+            flex: 1;
+            background-color: #1e293b;
             color: white;
+            border-radius: 8px;
+            overflow: hidden;
         }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            padding: 2rem;
+        .upcoming-title {
+            padding: 8px;
             text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            color: #3498db;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 1rem;
-            color: #2c3e50;
+            font-size: 0.85rem;
+            background-color: #0f172a;
         }
-
-        .feature-card p {
-            color: #7f8c8d;
-            font-size: 1rem;
-            line-height: 1.6;
+        .upcoming-content {
+            background-color: white;
+            height: 100%;
+            min-height: 60px;
+            padding: 10px;
+            color: #1e293b;
+            font-size: 0.9rem;
         }
-
+        .tasks-section { display: flex; gap: 25px; }
+        .small-tasks {
+            flex: 3;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .monster-tasks {
+            flex: 2;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .task-number {
+            min-width: 25px;
+            font-family: 'Courier Prime', monospace;
+            color: #64748b;
+        }
+        .task-input {
+            flex: 1;
+            border: none;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 0;
+            font-family: inherit;
+            background: transparent;
+            font-size: 0.95rem;
+        }
+        .monster-input { width: 100%; }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 5px;
+            transition: all 0.2s ease;
+        }
+        .checkbox:hover { border-color: #94a3b8; }
+        .checkbox.checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        .checkbox.checked::before {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .reminder-section {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .reminder-textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            border: none;
+            border-bottom: 1px solid #e2e8f0;
+            resize: none;
+            font-family: inherit;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            background: transparent;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-bottom-color: #3b82f6;
+        }
         @media (max-width: 768px) {
-            .dashboard-container {
-                padding: 1rem;
-            }
-
-            .welcome-card {
-                padding: 1.5rem;
-            }
-
-            .action-button {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
+            .header-section, .tasks-section { flex-direction: column; }
+            .upcoming-section { flex-direction: column; }
+            .planner-page { padding: 15px; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">Synclist</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'quickstart:start' %}">New Session</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    </li>
-                </ul>
+    <div class="planner-container">
+        <div class="planner-header">
+            <div class="planner-title">Synclist Daily Planner</div>
+            <div class="quickstart-info">
+                <span id="user-greeting"></span>
+                <div class="timer" id="session-timer">24:00:00</div>
             </div>
         </div>
-    </nav>
-
-    <div class="dashboard-container">
-        <div class="welcome-card">
-            <h2>Welcome, {{ session.name }}!</h2>
-            <p>Your session will expire in 24 hours. Make sure to save your progress or create an account to keep your data permanently.</p>
-            <div>
-                <button class="action-button">Create New List</button>
-                <button class="action-button secondary-button">View Existing Lists</button>
-            </div>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-list-check"></i>
+        <div class="planner-page" id="planner-page">
+            <div class="header-section">
+                <div class="today-section">
+                    <span class="section-title">TODAY IS</span>
+                    <input type="text" class="date-input" id="date-input">
                 </div>
-                <h3>Task Management</h3>
-                <p>Create and manage your tasks with ease. Set priorities, due dates, and track your progress.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-users"></i>
+                <div class="upcoming-section">
+                    <div class="upcoming-box">
+                        <div class="upcoming-title">COMING UP</div>
+                        <div class="upcoming-content" contenteditable="true" id="coming-up"></div>
+                    </div>
+                    <div class="upcoming-box">
+                        <div class="upcoming-title">EVENTUALLY</div>
+                        <div class="upcoming-content" contenteditable="true" id="eventually"></div>
+                    </div>
                 </div>
-                <h3>Collaboration</h3>
-                <p>Share your lists with others and work together in real-time. Perfect for team projects.</p>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-bell"></i>
+            <div class="tasks-section">
+                <div class="small-tasks">
+                    <div class="section-title">SMALL TASKS</div>
+                    <div class="tasks-list" id="small-tasks-list"></div>
                 </div>
-                <h3>Reminders</h3>
-                <p>Never miss a deadline with our smart reminder system. Get notified when tasks are due.</p>
+                <div class="monster-tasks">
+                    <div class="section-title">MONSTER TASKS</div>
+                    <div class="tasks-list" id="monster-tasks-list"></div>
+                </div>
+            </div>
+            <div class="reminder-section">
+                <div class="section-title">THINGS TO REMIND OTHER PEOPLE</div>
+                <textarea class="reminder-textarea" id="reminder-textarea" placeholder="Type your reminders here..."></textarea>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // --- User Identification ---
+    const userName = localStorage.getItem('plannerUserName') || 'User';
+    document.getElementById('user-greeting').textContent = `Hello, ${userName}!`;
+    const plannerKey = `plannerData_${userName}`;
+    // --- Planner Data Structure ---
+    let plannerData = JSON.parse(localStorage.getItem(plannerKey)) || {
+        smallTasks: Array(10).fill({text: '', checked: false}),
+        monsterTasks: Array(7).fill({text: '', checked: false}),
+        comingUp: '',
+        eventually: '',
+        reminders: '',
+        startTime: null
+    };
+    // --- Timer & Expiry ---
+    if (!plannerData.startTime) {
+        plannerData.startTime = new Date().toISOString();
+        localStorage.setItem(plannerKey, JSON.stringify(plannerData));
+    }
+    function isExpired() {
+        const start = new Date(plannerData.startTime);
+        const now = new Date();
+        return (now - start) > 24 * 60 * 60 * 1000;
+    }
+    function updateTimer() {
+        const start = new Date(plannerData.startTime);
+        const now = new Date();
+        let diff = 24 * 60 * 60 * 1000 - (now - start);
+        if (diff <= 0) {
+            document.getElementById('session-timer').textContent = "Expired";
+            showExpiryMessage();
+            return;
+        }
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('session-timer').textContent =
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+    // --- Expiry Message ---
+    function showExpiryMessage() {
+        document.getElementById('planner-page').innerHTML = `
+            <div style="text-align:center; padding:2rem;">
+                <h2>Time's up!</h2>
+                <p>Small steps, big success! You can complete all your tasks tomorrow!</p>
+                <button onclick="extendTimer()">Extend Timer</button>
+                <button onclick="startNewDay()">Start New Day</button>
+            </div>
+        `;
+    }
+    function extendTimer() {
+        plannerData.startTime = new Date().toISOString();
+        localStorage.setItem(plannerKey, JSON.stringify(plannerData));
+        window.location.reload();
+    }
+    function startNewDay() {
+        localStorage.removeItem(plannerKey);
+        window.location.reload();
+    }
+    // --- Planner UI Logic ---
+    function setCurrentDate() {
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('date-input').value = today.toLocaleDateString('en-US', options);
+    }
+    function generateTaskItems() {
+        // Small Tasks
+        const smallTasksList = document.getElementById('small-tasks-list');
+        smallTasksList.innerHTML = '';
+        for (let i = 0; i < 10; i++) {
+            const task = plannerData.smallTasks[i] || {text: '', checked: false};
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-item';
+            taskItem.innerHTML = `
+                <span class="task-number">${i+1})</span>
+                <input type="text" class="task-input" data-type="small" data-id="${i}" value="${task.text}">
+                <div class="checkbox${task.checked ? ' checked' : ''}" data-type="small" data-id="${i}"></div>
+            `;
+            smallTasksList.appendChild(taskItem);
+        }
+        // Monster Tasks
+        const monsterTasksList = document.getElementById('monster-tasks-list');
+        monsterTasksList.innerHTML = '';
+        for (let i = 0; i < 7; i++) {
+            const task = plannerData.monsterTasks[i] || {text: '', checked: false};
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-item';
+            taskItem.innerHTML = `
+                <input type="text" class="task-input monster-input" data-type="monster" data-id="${i}" value="${task.text}">
+                <div class="checkbox${task.checked ? ' checked' : ''}" data-type="monster" data-id="${i}"></div>
+            `;
+            monsterTasksList.appendChild(taskItem);
+        }
+    }
+    function loadSavedData() {
+        document.getElementById('coming-up').innerHTML = plannerData.comingUp || '';
+        document.getElementById('eventually').innerHTML = plannerData.eventually || '';
+        document.getElementById('reminder-textarea').value = plannerData.reminders || '';
+    }
+    function saveData() {
+        // Small Tasks
+        plannerData.smallTasks = [];
+        document.querySelectorAll('.small-tasks .task-input').forEach(input => {
+            const id = parseInt(input.dataset.id);
+            const checkbox = document.querySelector(`.small-tasks .checkbox[data-id="${id}"]`);
+            plannerData.smallTasks[id] = {
+                text: input.value,
+                checked: checkbox.classList.contains('checked')
+            };
+        });
+        // Monster Tasks
+        plannerData.monsterTasks = [];
+        document.querySelectorAll('.monster-tasks .task-input').forEach(input => {
+            const id = parseInt(input.dataset.id);
+            const checkbox = document.querySelector(`.monster-tasks .checkbox[data-id="${id}"]`);
+            plannerData.monsterTasks[id] = {
+                text: input.value,
+                checked: checkbox.classList.contains('checked')
+            };
+        });
+        // Coming Up & Eventually
+        plannerData.comingUp = document.getElementById('coming-up').innerHTML;
+        plannerData.eventually = document.getElementById('eventually').innerHTML;
+        // Reminders
+        plannerData.reminders = document.getElementById('reminder-textarea').value;
+        localStorage.setItem(plannerKey, JSON.stringify(plannerData));
+    }
+    function setupEventListeners() {
+        // Task input changes
+        document.querySelectorAll('.task-input').forEach(input => {
+            input.addEventListener('input', saveData);
+        });
+        // Checkbox toggles
+        document.querySelectorAll('.checkbox').forEach(box => {
+            box.addEventListener('click', function() {
+                box.classList.toggle('checked');
+                saveData();
+            });
+        });
+        // Reminder textarea
+        document.getElementById('reminder-textarea').addEventListener('input', saveData);
+        // Coming Up & Eventually
+        document.getElementById('coming-up').addEventListener('input', saveData);
+        document.getElementById('eventually').addEventListener('input', saveData);
+        // Auto-save every 30 seconds
+        setInterval(saveData, 30000);
+    }
+    // --- Initialization ---
+    function initPlanner() {
+        if (isExpired()) {
+            showExpiryMessage();
+            return;
+        }
+        setCurrentDate();
+        generateTaskItems();
+        loadSavedData();
+        setupEventListeners();
+    }
+    document.addEventListener('DOMContentLoaded', initPlanner);
+    </script>
 </body>
 </html> 
