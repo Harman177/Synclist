@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('todoapp.urls')),
     path('userauth/', include('userauth.urls')),
+    path('quickstart/', include('quickstart.urls')),
 ]
