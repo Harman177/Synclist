@@ -327,6 +327,10 @@ def login_view(request):
     
     return render(request, 'login.html')
 
+@login_required
+def diary_view(request):
+    return render(request, 'diary.html')
+
 
 
 
