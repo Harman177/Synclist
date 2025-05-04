@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synclist - Daily Planner</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .planner-container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .planner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .planner-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .quickstart-info {
+            background-color: #e0f2fe;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quickstart-info span {
+            font-weight: 500;
+        }
+
+        .quickstart-info .timer {
+            background-color: #0ea5e9;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .planner-page {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .header-section {
+            display: flex;
+            gap: 20px;
+        }
+
+        .today-section {
+            flex: 1;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .date-input {
+            width: 100%;
+            padding: 8px 0;
+            border: none;
+            border-bottom: 1px solid #cbd5e1;
+            font-family: inherit;
+            background: transparent;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .upcoming-section {
+            flex: 1;
+            display: flex;
+            gap: 15px;
+        }
+
+        .upcoming-box {
+            flex: 1;
+            background-color: #1e293b;
+            color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .upcoming-title {
+            padding: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            background-color: #0f172a;
+        }
+
+        .upcoming-content {
+            background-color: white;
+            height: 100%;
+            min-height: 60px;
+            padding: 10px;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+
+        .tasks-section {
+            display: flex;
+            gap: 25px;
+        }
+
+        .small-tasks {
+            flex: 3;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .monster-tasks {
+            flex: 2;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-number {
+            min-width: 25px;
+            font-family: 'Courier Prime', monospace;
+            color: #64748b;
+        }
+
+        .task-input {
+            flex: 1;
+            border: none;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 0;
+            font-family: inherit;
+            background: transparent;
+            font-size: 0.95rem;
+        }
+
+        .monster-input {
+            width: 100%;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox:hover {
+            border-color: #94a3b8;
+        }
+
+        .checkbox.checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+
+        .checkbox.checked::before {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .reminder-section {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .reminder-textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            border: none;
+            border-bottom: 1px solid #e2e8f0;
+            resize: none;
+            font-family: inherit;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            background: transparent;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-bottom-color: #3b82f6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-section, .tasks-section {
+                flex-direction: column;
+            }
+            
+            .upcoming-section {
+                flex-direction: column;
+            }
+            
+            .planner-page {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="planner-container">
+        <div class="planner-header">
+            <div class="planner-title">Synclist Daily Planner</div>
+            <div class="quickstart-info">
+                <span>Quick Session</span>
+                <div class="timer" id="session-timer">24:00:00</div>
+            </div>
+        </div>
+        
+        <div class="planner-page">
+            <div class="header-section">
+                <div class="today-section">
+                    <span class="section-title">TODAY IS</span>
+                    <input type="text" class="date-input" id="date-input">
+                </div>
+                <div class="upcoming-section">
+                    <div class="upcoming-box">
+                        <div class="upcoming-title">COMING UP</div>
+                        <div class="upcoming-content" contenteditable="true" placeholder="Add upcoming tasks..."></div>
+                    </div>
+                    <div class="upcoming-box">
+                        <div class="upcoming-title">EVENTUALLY</div>
+                        <div class="upcoming-content" contenteditable="true" placeholder="Add future tasks..."></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tasks-section">
+                <div class="small-tasks">
+                    <div class="section-title">SMALL TASKS</div>
+                    <div class="tasks-list" id="small-tasks-list">
+                        <!-- Tasks will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="monster-tasks">
+                    <div class="section-title">MONSTER TASKS</div>
+                    <div class="tasks-list" id="monster-tasks-list">
+                        <!-- Tasks will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="reminder-section">
+                <div class="section-title">THINGS TO REMIND OTHER PEOPLE</div>
+                <textarea class="reminder-textarea" placeholder="Type your reminders here..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const config = {
+            smallTasksCount: 10,
+            monsterTasksCount: 7
+        };
+
+        // DOM Elements
+        const smallTasksList = document.getElementById('small-tasks-list');
+        const monsterTasksList = document.getElementById('monster-tasks-list');
+        const dateInput = document.getElementById('date-input');
+        const sessionTimer = document.getElementById('session-timer');
+
+        // Initialize the planner
+        function initPlanner() {
+            setCurrentDate();
+            generateTaskItems();
+            loadSavedData();
+            setupEventListeners();
+            startSessionTimer();
+        }
+
+        // Set current date in the input field
+        function setCurrentDate() {
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateInput.value = today.toLocaleDateString('en-US', options);
+        }
+
+        // Generate task items dynamically
+        function generateTaskItems() {
+            // Generate small tasks
+            for (let i = 1; i <= config.smallTasksCount; i++) {
+                const taskItem = createTaskItem(i, 'small');
+                smallTasksList.appendChild(taskItem);
+            }
+
+            // Generate monster tasks
+            for (let i = 1; i <= config.monsterTasksCount; i++) {
+                const taskItem = createTaskItem(i, 'monster');
+                monsterTasksList.appendChild(taskItem);
+            }
+        }
+
+        // Create a single task item
+        function createTaskItem(number, type) {
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-item';
+            
+            if (type === 'small') {
+                taskItem.innerHTML = `
+                    <span class="task-number">${number})</span>
+                    <input type="text" class="task-input" data-type="small" data-id="${number}">
+                    <div class="checkbox" onclick="toggleCheckbox(this)" data-type="small" data-id="${number}"></div>
+                `;
+            } else {
+                taskItem.innerHTML = `
+                    <input type="text" class="task-input monster-input" data-type="monster" data-id="${number}">
+                    <div class="checkbox" onclick="toggleCheckbox(this)" data-type="monster" data-id="${number}"></div>
+                `;
+            }
+            
+            return taskItem;
+        }
+
+        // Toggle checkbox state
+        function toggleCheckbox(element) {
+            element.classList.toggle('checked');
+            saveData();
+            
+            // Add animation
+            element.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Save all data to localStorage
+        function saveData() {
+            const data = {
+                smallTasks: [],
+                monsterTasks: [],
+                comingUp: document.querySelector('.upcoming-section .upcoming-content:first-child').innerHTML,
+                eventually: document.querySelector('.upcoming-section .upcoming-content:last-child').innerHTML,
+                reminders: document.querySelector('.reminder-textarea').value,
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Save small tasks
+            document.querySelectorAll('.small-tasks .task-input').forEach(input => {
+                data.smallTasks.push({
+                    id: input.dataset.id,
+                    text: input.value,
+                    checked: input.nextElementSibling.classList.contains('checked')
+                });
+            });
+
+            // Save monster tasks
+            document.querySelectorAll('.monster-tasks .task-input').forEach(input => {
+                data.monsterTasks.push({
+                    id: input.dataset.id,
+                    text: input.value,
+                    checked: input.nextElementSibling.classList.contains('checked')
+                });
+            });
+
+            localStorage.setItem('synclistPlannerData', JSON.stringify(data));
+        }
+
+        // Load saved data from localStorage
+        function loadSavedData() {
+            const savedData = localStorage.getItem('synclistPlannerData');
+            if (!savedData) return;
+
+            const data = JSON.parse(savedData);
+
+            // Load small tasks
+            data.smallTasks.forEach(task => {
+                const input = document.querySelector(`.small-tasks .task-input[data-id="${task.id}"]`);
+                const checkbox = document.querySelector(`.small-tasks .checkbox[data-id="${task.id}"]`);
+                if (input && checkbox) {
+                    input.value = task.text;
+                    if (task.checked) checkbox.classList.add('checked');
+                }
+            });
+
+            // Load monster tasks
+            data.monsterTasks.forEach(task => {
+                const input = document.querySelector(`.monster-tasks .task-input[data-id="${task.id}"]`);
+                const checkbox = document.querySelector(`.monster-tasks .checkbox[data-id="${task.id}"]`);
+                if (input && checkbox) {
+                    input.value = task.text;
+                    if (task.checked) checkbox.classList.add('checked');
+                }
+            });
+
+            // Load upcoming content
+            if (data.comingUp) {
+                document.querySelector('.upcoming-section .upcoming-content:first-child').innerHTML = data.comingUp;
+            }
+            if (data.eventually) {
+                document.querySelector('.upcoming-section .upcoming-content:last-child').innerHTML = data.eventually;
+            }
+
+            // Load reminders
+            if (data.reminders) {
+                document.querySelector('.reminder-textarea').value = data.reminders;
+            }
+        }
+
+        // Setup event listeners for saving data
+        function setupEventListeners() {
+            // Task input changes
+            document.querySelectorAll('.task-input').forEach(input => {
+                input.addEventListener('input', saveData);
+            });
+
+            // Reminder textarea changes
+            document.querySelector('.reminder-textarea').addEventListener('input', saveData);
+
+            // Upcoming content changes
+            document.querySelectorAll('.upcoming-content').forEach(content => {
+                content.addEventListener('input', saveData);
+            });
+
+            // Auto-save every 30 seconds as backup
+            setInterval(saveData, 30000);
+        }
+
+        // Session timer functionality
+        function startSessionTimer() {
+            // Set expiration to 24 hours from now
+            const expirationTime = new Date();
+            expirationTime.setHours(expirationTime.getHours() + 24);
+            
+            function updateTimer() {
+                const now = new Date();
+                const diff = expirationTime - now;
+                
+                if (diff <= 0) {
+                    sessionTimer.textContent = "Expired";
+                    return;
+                }
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                sessionTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // Initialize the planner when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initPlanner);
+    </script>
+</body>
+</html>
