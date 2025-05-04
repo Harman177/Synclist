@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/todos/add/', views.add_todo, name='add_todo'),
     path('api/todos/update/<int:todo_id>/', views.update_todo, name='update_todo'),
     path('api/todos/delete/<int:todo_id>/', views.delete_todo, name='delete_todo'),
+    path('diary/', views.diary_view, name='diary'),
 ]
 
 

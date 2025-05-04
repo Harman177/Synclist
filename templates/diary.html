@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Penguin Secret Diary</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #d0f0ff, #ffffff);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+.container {
+  background: #ffffffcc;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  padding: 30px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  backdrop-filter: blur(10px);
+}
+
+.penguin-img {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+h1 {
+  color: #0077b6;
+  margin-bottom: 20px;
+}
+
+input[type="password"], textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 12px 0;
+  border: 2px solid #90e0ef;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #e0f7ff;
+}
+
+textarea {
+  height: 200px;
+  resize: none;
+}
+
+button {
+  background-color: #00b4d8;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  margin: 8px 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0077b6;
+}
+
+#save-message, #error-message {
+  color: #0077b6;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.buttons {
+  margin-top: 10px;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="data:image/jpeg;base64,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" alt="Penguin" class="penguin-img" alt="Penguin" class="penguin-img">
+    <h1>🐧  Secret Diary 🐧</h1>
+
+
+<div id="lock-screen">
+  <input type="password" id="password" placeholder="Enter your magic password..." />
+  <button onclick="unlockDiary()">🔓 Unlock</button>
+  <p id="error-message"></p>
+</div>
+
+<div id="diary-screen" class="hidden">
+  <textarea id="diary" placeholder="Write your chilly secrets here..."></textarea>
+  <div class="buttons">
+    <button onclick="saveDiary()">💾 Save</button>
+    <button onclick="lockDiary()">🔒 Lock</button>
+  </div>
+  <p id="save-message"></p>
+</div>
+
+
+  </div>
+
+  <!-- 🔔 Sound Effects -->
+
+<audio id="save-sound" src="https://assets.mixkit.co/active_storage/sfx/293/293-preview.mp3"></audio> <audio id="lock-sound" src="https://assets.mixkit.co/active_storage/sfx/299/299-preview.mp3"></audio>
+
+  <script>
+    const correctPassword = "penguin123"; // Change your secret password if you want
+    const lockScreen = document.getElementById('lock-screen');
+    const diaryScreen = document.getElementById('diary-screen');
+    const passwordInput = document.getElementById('password');
+    const diary = document.getElementById('diary');
+    const errorMessage = document.getElementById('error-message');
+    const saveMessage = document.getElementById('save-message');
+
+    const saveSound = document.getElementById('save-sound');
+    const lockSound = document.getElementById('lock-sound');
+
+    // Load saved diary from localStorage
+    window.onload = function() {
+      const savedDiary = localStorage.getItem('penguinDiary');
+      if (savedDiary) {
+        diary.value = savedDiary;
+      }
+    };
+
+    function unlockDiary() {
+      if (passwordInput.value === correctPassword) {
+        lockScreen.classList.add('hidden');
+        diaryScreen.classList.remove('hidden');
+        errorMessage.textContent = "";
+        passwordInput.value = "";
+      } else {
+        errorMessage.textContent = "❌ Wrong password, little penguin! Try again.";
+      }
+    }
+
+    function lockDiary() {
+      diaryScreen.classList.add('hidden');
+      lockScreen.classList.remove('hidden');
+      saveMessage.textContent = "";
+      lockSound.play(); // Play lock sound
+    }
+
+    function saveDiary() {
+      localStorage.setItem('penguinDiary', diary.value);
+      saveMessage.textContent = "✅ Diary saved successfully!";
+      saveSound.play(); // Play save sound
+      setTimeout(() => saveMessage.textContent = "", 2000);
+    }
+  </script>
+
+</body>
+</html>
