@@ -6,11 +6,27 @@
     <meta charset="UTF-8">
     <title>Select Your Workspace</title>
     <link rel="stylesheet" href="{% static 'css/choose_mode.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .back-link {
+            color: #6B7280;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h2>Select Your Workspace</h2>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'login' %}" class="back-link">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Login
+                </a>
+                <h2 class="mb-0">Select Your Workspace</h2>
+            </div>
             <div class="user-info">
                 <span>{{ user.first_name }} • {{ user.last_name }}</span>
                 <a href="{% url 'logout' %}">🔓</a>

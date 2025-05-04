@@ -177,6 +177,38 @@ def update_ticket_status(request, ticket_id, new_status):
         
         return redirect('employee_dashboard')
 
+@login_required
+def reassign_ticket(request, ticket_id):
+    if not request.user.profile.is_admin:
+        messages.error(request, "Only admins can reassign tickets")
+        return redirect('employee_dashboard')
+    
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    
+    if request.method == 'POST':
+        new_assignee_id = request.POST.get('assigned_to')
+        if new_assignee_id:
+            new_assignee = get_object_or_404(User, id=new_assignee_id)
+            if not new_assignee.profile.is_admin:  # Only allow assigning to non-admin users
+                ticket.assigned_to = new_assignee
+                ticket.save()
+                messages.success(request, f"Ticket has been reassigned to {new_assignee.username}")
+            else:
+                messages.error(request, "Cannot assign tickets to admin users")
+        else:
+            ticket.assigned_to = None
+            ticket.save()
+            messages.success(request, "Ticket has been unassigned")
+        return redirect('admin_dashboard')
+    
+    # Get all non-admin users for the dropdown
+    employees = User.objects.filter(profile__is_admin=False)
+    context = {
+        'ticket': ticket,
+        'employees': employees,
+    }
+    return render(request, 'reassign_ticket.html', context)
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_datetime

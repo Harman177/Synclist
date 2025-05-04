@@ -254,7 +254,7 @@
 </style>
 
 <div class="d-flex align-items-center mb-4">
-    <a href="{% url 'dashboard' %}" class="back-link me-3">
+    <a href="{% url 'choose-role' %}" class="back-link me-3">
         <i class="fas fa-arrow-left me-2"></i> Back
     </a>
     <h3 class="mb-0">Admin Dashboard</h3>
@@ -375,15 +375,21 @@
                                 {{ ticket.get_status_display }}
                             </span>
                             
-                            {% if ticket.status != 'closed' %}
-                                <a href="{% url 'update_ticket_status' ticket.id 'closed' %}" class="btn btn-outline-secondary action-btn">
-                                    <i class="fas fa-times me-1"></i> Close Task
+                            <div class="d-flex flex-column align-items-end">
+                                <a href="{% url 'reassign_ticket' ticket.id %}" class="btn btn-outline-primary action-btn mb-2">
+                                    <i class="fas fa-user-edit me-1"></i> Reassign
                                 </a>
-                            {% else %}
-                                <a href="{% url 'update_ticket_status' ticket.id 'open' %}" class="btn btn-outline-primary action-btn">
-                                    <i class="fas fa-redo me-1"></i> Reopen Task
-                                </a>
-                            {% endif %}
+                                
+                                {% if ticket.status != 'closed' %}
+                                    <a href="{% url 'update_ticket_status' ticket.id 'closed' %}" class="btn btn-outline-secondary action-btn">
+                                        <i class="fas fa-times me-1"></i> Close Task
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'update_ticket_status' ticket.id 'open' %}" class="btn btn-outline-primary action-btn">
+                                        <i class="fas fa-redo me-1"></i> Reopen Task
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
