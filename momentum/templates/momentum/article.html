@@ -1,0 +1,31 @@
+{% extends 'todoapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <header>
+        <h1>{{ article.title }}</h1>
+        {% if article.subtitle %}
+            <h3>{{ article.subtitle }}</h3>
+        {% endif %}
+    </header>
+
+    <aside class="sidebar">
+        <h2>ALL TOPICS</h2>
+        <ul>
+            {% for t in topics %}
+                <li><a href="{% url 'topic_detail' t.slug %}">{{ t.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <section class="main-content">
+        {% if article.image %}
+            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="article-image">
+        {% endif %}
+        <div>
+            {{ article.content|safe }}
+        </div>
+    </section>
+</div>
+{% endblock %}

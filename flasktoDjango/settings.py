@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'todoapp.apps.TodoappConfig',
     'userauth.apps.UserauthConfig',
     'quickstart.apps.QuickstartConfig',
+    'momentum.apps.MomentumConfig',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'flasktoDjango.urls'
@@ -131,3 +134,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# CKEditor
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS ={
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+},
+}
