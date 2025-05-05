@@ -1,0 +1,37 @@
+{% extends 'todoapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <header>
+        <h1>The Productivity Guide</h1>
+        <p>Time Management Strategies That Work</p>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>ALL TOPICS</h2>
+        <ul>
+            {% for topic in topics %}
+                <li><a href="{% url 'topic_detail' topic.slug %}">{{ topic.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="main-content">
+        {% if featured_article %}
+            <h2>{{ featured_article.title }}</h2>
+            {% if featured_article.image %}
+                <img src="{{ featured_article.image.url }}" alt="{{ featured_article.title }}" class="article-image">
+            {% endif %}
+            {{ featured_article.content|safe }}
+        {% else %}
+            <h2>What is Productivity?</h2>
+            <img src="{% static 'todoapp/images/productivity.jpg' %}" alt="Productivity desk setup" class="article-image">
+            <p>Productivity is the measure of efficiency of a person completing a task. We often assume that productivity means getting more things done each day. Wrong. Productivity is getting important things done consistently.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
